@@ -44,20 +44,16 @@ class DataManipulation extends DB
         }
     }
 
-    public function subItemIsExist($item_id)
+    public function select_Item_By_Id($item_id)
     {
         $this->pdo = $this->getConnection();
-        $sql = "select * from sub_item where si_id = ?";
+        $sql = "select * from item where id = ?";
         try {
-
             $query = $this->pdo->prepare($sql);
             $query->execute(array($item_id));
-            $query->setFetchMode(PDO::FETCH_OBJ);
+            $query->setFetchMode(PDO::FETCH_ASSOC);
             $res = $query->fetch();
-            if (is_bool($res)) {
-                $res['err_msg'] = "Invalid data provided";
-            }
-            return json_encode($res, JSON_FORCE_OBJECT);
+            return $res;
         } catch (\PDOException $e) {
             exit($e->getMessage());
         }
@@ -73,7 +69,7 @@ class DataManipulation extends DB
             $query->execute(array($item_id));
             $query->setFetchMode(PDO::FETCH_OBJ);
             $res = $query->fetchAll();
-            $res['item_id'] = $item_id;
+            $res['item_details'] = $this->select_Item_By_Id($item_id);
             return json_encode($res, JSON_FORCE_OBJECT);
         } catch (\PDOException $e) {
             exit($e->getMessage());
