@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Bootstrap Site</title>
+        <link rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+            integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I"
+            crossorigin="anonymous">
+        <script
+            src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+            integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+            crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="container mt-5">
+            <h3 class="border-bottom">Item 1</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">ColA</th>
+                        <th scope="col">ColB</th>
+                        <th scope="col">ColC</th>
+                        <th scope="col">ColD</th>
+                    </tr>
+                </thead>
+                <tbody id="root">
+                    <tr>
+                        <th scope="row">1</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+    
+                </tbody>
+            </table>
+        </div>
+     
+        <script>
+        async function data() {
+            const response = await fetch('http://127.0.0.1:8000/item/1');
+            const data = await response.json();
+            console.log(data[0].name);
+            let length = Object.keys(data).length;
+            let html = "";
+            for (let i = 0; i < length-1; i++) {
+                console.log(data[i]);
+                html +=  `<tr>
+                    <td scope="row">${i}</td>
+                    <td>${data[i].name}</td>
+                    <td>${data[i].col_a}</td>
+                    <td>${data[i].col_b}</td>
+                    <td>${data[i].col_c}</td>
+                    <td>${data[i].col_d}</td>
+                    </tr>
+                  `
+            }
+            document.getElementById('root').innerHTML = html;
+        }
+        data()
+    </script>
+    </body>
+</html>
