@@ -14,55 +14,63 @@ class DataManipulation extends DB
     public function selectItem()
     {
         $this->pdo = $this->getConnection();
+        $res = null;
         $sql = "SELECT * FROM item";
         try {
             $query = $this->pdo->query($sql);
             $query->setFetchMode(PDO::FETCH_OBJ);
             $res = $query->fetchAll();
             // $res['item'] = $res;
-            return json_encode($res);
+
         } catch (\PDOException $e) {
             exit($e->getMessage());
         }
+        $this->pdo = null;
+        return json_encode($res, JSON_FORCE_OBJECT);
     }
 
     public function itemIsExist($item_id)
     {
         $this->pdo = $this->getConnection();
-        $sql = "SELECT  EXISTS (select id from item where id = ?) as check_item";
+        // $sql = "SELECT  EXISTS (select id from item where id = ?) as check_item";
+      
+        $sql = "SELECT  EXISTS (select id from item where id = ? AND (SELECT COUNT(si.item_id) < 6 FROM sub_item si WHERE si.item_id = ?) )as check_item ";
+        $res = null;
+       
         try {
             $query = $this->pdo->prepare($sql);
-            $query->execute(array($item_id));
+            $query->execute(array($item_id, $item_id));
             $query->setFetchMode(PDO::FETCH_ASSOC);
             $res = $query->fetch();
-            // if(is_bool($res)){
-            //     $res['err_msg'] = "Invalid data provided";
-            // }
-            return json_encode($res, JSON_FORCE_OBJECT);
         } catch (\PDOException $e) {
             exit($e->getMessage());
         }
+        $this->pdo = null;
+        return json_encode($res, JSON_FORCE_OBJECT);
     }
 
     public function select_Item_By_Id($item_id)
     {
         $this->pdo = $this->getConnection();
         $sql = "select * from item where id = ?";
+        $res = null;
         try {
             $query = $this->pdo->prepare($sql);
             $query->execute(array($item_id));
             $query->setFetchMode(PDO::FETCH_ASSOC);
             $res = $query->fetch();
-            return $res;
         } catch (\PDOException $e) {
             exit($e->getMessage());
         }
+        $this->pdo = null;
+        return $res;
     }
 
     public function select_SubItem_By_ItemId($item_id)
     {
         $this->pdo = $this->getConnection();
-        $sql = "select * from sub_item where item_id = ?";
+        $res = null;
+        $sql = "select * from sub_item where item_id = ? order by si_id desc ";
         try {
 
             $query = $this->pdo->prepare($sql);
@@ -70,23 +78,27 @@ class DataManipulation extends DB
             $query->setFetchMode(PDO::FETCH_OBJ);
             $res = $query->fetchAll();
             $res['item_details'] = $this->select_Item_By_Id($item_id);
-            return json_encode($res, JSON_FORCE_OBJECT);
         } catch (\PDOException $e) {
             exit($e->getMessage());
         }
+        $this->pdo = null;
+        return json_encode($res, JSON_FORCE_OBJECT);
     }
 
 
     public function insertSubItem(array $data)
     {
-        $this->pdo = $this->getConnection();
+
+        $res = null;
         $sql = "INSERT INTO sub_item (item_id, name, col_a, col_b, col_c, col_d, created_at, updated_at) VALUES (:item_id, :name, :col_a,  :col_b, :col_c, :col_d, now(), now())";
+
         try {
             $ress =  $this->itemIsExist($data['item_id']);
             $ress = json_decode($ress, true);
             if ($ress['check_item'] == 0) {
-                $res['err_msg'] = "Invalid item_id provided";
+                $res['err_msg'] = "Invalid item_id provided or item is full";
             } else {
+                $this->pdo = $this->getConnection();
                 $sth = $this->pdo->prepare($sql);
                 $status = $sth->execute(array(
                     'item_id' => $data['item_id'],
@@ -98,9 +110,10 @@ class DataManipulation extends DB
                 ));
                 $res['ret_data'] = $sth->rowCount();
             }
-            return $res;
         } catch (\PDOException $e) {
             exit($e->getMessage());
         }
+        $this->pdo = null;
+        return $res;
     }
 }

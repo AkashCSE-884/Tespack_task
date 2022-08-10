@@ -73,6 +73,9 @@ class DataProcess extends DataManipulation
         if (!isset($input['col_c'])) {
             return $this->unprocessableEntityResponse('col_c is required');
         }
+        if (!isset($input['col_d'])) {
+            return $this->unprocessableEntityResponse('col_d is required');
+        }
         $result = $this->dm->insertSubItem($input);
         $response['status_code_header'] = 'HTTP/1.1 201 Created';
         $response['body'] =  json_encode($result);

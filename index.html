@@ -19,7 +19,7 @@
     </head>
     <body>
         <div class="container mt-5">
-            <h3 class="border-bottom">Item 1</h3>
+            <h3 class="border-bottom" id="itemTitle">Item 1</h3>
             <table class="table">
                 <thead>
                     <tr>
@@ -39,20 +39,19 @@
                         <td></td>
                         <td></td>
                     </tr>
-    
+
                 </tbody>
             </table>
         </div>
-     
+
         <script>
         async function data() {
-            const response = await fetch('http://127.0.0.1:8000/item/1');
+            try {
+                const response = await fetch('http://127.0.0.1:8000/item/1');
             const data = await response.json();
-            console.log(data[0].name);
             let length = Object.keys(data).length;
             let html = "";
             for (let i = 0; i < length-1; i++) {
-                console.log(data[i]);
                 html +=  `<tr>
                     <td scope="row">${i}</td>
                     <td>${data[i].name}</td>
@@ -63,7 +62,12 @@
                     </tr>
                   `
             }
-            document.getElementById('root').innerHTML = html;
+            itemTitle.innerHTML = data.item_details.name;
+            root.innerHTML = html;
+            } catch (error) {
+                console.log(error);
+            }
+
         }
         data()
     </script>
