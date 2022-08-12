@@ -53,15 +53,12 @@ class DataProcess extends DataManipulation
         $response['body'] = $result;
         return $response;
     }
-
-    private function storeSubItemData()
+    private function inputValidation(array $input)
     {
-        $input = (array) json_decode(file_get_contents('php://input'), TRUE);
-
         if (!array_key_exists("item_id", $input)) {
             return $this->unprocessableEntityResponse('item_id is required');
         }
-        if (!isset($input['name'])) {
+        if (!isset($input['si_id'])) {
             return  $this->unprocessableEntityResponse('name is required');
         }
         if (!isset($input['col_a'])) {
@@ -78,8 +75,49 @@ class DataProcess extends DataManipulation
         }
         $result = $this->dm->insertSubItem($input);
         $response['status_code_header'] = 'HTTP/1.1 201 Created';
-        $response['body'] =  json_encode($result);
+        $response['body'] =  $input;
         return $response;
+    }
+    private function modifyInputData($input)
+    {
+
+        $input = trim($input);
+        $input = str_replace(" ", "", $input);
+        $input = explode("&", $input);
+
+        $sub_item = array();
+        $result = null;
+
+        for ($i = 0; $i <= count($input) - 1; $i++) {
+
+            $temp = explode(",", $input[$i]);
+            array_push($sub_item, $temp);
+            $sub_temp = explode("=", $sub_item[$i][0]);
+            $sub_item[$i][0] = $sub_temp[1];
+        }
+
+        $modify_input = array();
+        for ($j = 1; $j <= count($sub_item) - 1; $j++) {
+
+            $modify_input['item_id'] = $sub_item[0][0];
+            $modify_input['si_id'] = $sub_item[$j][0];
+            $modify_input['col_a'] = $sub_item[$j][1];
+            $modify_input['col_b'] = $sub_item[$j][2];
+            $modify_input['col_c'] = $sub_item[$j][3];
+            $modify_input['col_d'] = $sub_item[$j][4];
+
+            $result = $this->dm->insertSubItem($modify_input);
+            if (!empty($result['err_msg'])) {
+                break;
+            }
+        }
+        echo json_encode($result, JSON_UNESCAPED_UNICODE);
+    }
+    private function storeSubItemData()
+    {
+        $input = file_get_contents('php://input');
+        $this->modifyInputData($input);
+        // var_dump($input);
     }
     private function unprocessableEntityResponse($msg)
     {
