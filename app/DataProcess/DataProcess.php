@@ -111,12 +111,15 @@ class DataProcess extends DataManipulation
                 break;
             }
         }
-        echo json_encode($result, JSON_UNESCAPED_UNICODE);
+        return json_encode($result, JSON_UNESCAPED_UNICODE);
     }
     private function storeSubItemData()
     {
         $input = file_get_contents('php://input');
-        $this->modifyInputData($input);
+        $result = $this->modifyInputData($input);
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = $result;
+        return $response;
         // var_dump($input);
     }
     private function unprocessableEntityResponse($msg)
