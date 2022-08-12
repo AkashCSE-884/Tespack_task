@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 06, 2022 at 05:30 PM
+-- Generation Time: Aug 12, 2022 at 03:42 PM
 -- Server version: 10.1.40-MariaDB
 -- PHP Version: 7.3.5
 
@@ -50,7 +50,8 @@ INSERT INTO `item` (`id`, `name`, `created_at`, `updated_at`) VALUES
 --
 
 CREATE TABLE `sub_item` (
-  `si_id` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL,
+  `si_id` varchar(50) NOT NULL,
   `item_id` bigint(20) NOT NULL,
   `name` varchar(250) NOT NULL,
   `col_a` varchar(250) NOT NULL,
@@ -65,21 +66,19 @@ CREATE TABLE `sub_item` (
 -- Dumping data for table `sub_item`
 --
 
-INSERT INTO `sub_item` (`si_id`, `item_id`, `name`, `col_a`, `col_b`, `col_c`, `col_d`, `created_at`, `updated_at`) VALUES
-(1, 1, 'sub_item_1', 'val_a', 'val_b', 'val_c', 'val_d', '2022-08-06 20:40:13', '2022-08-06 20:40:13'),
-(2, 1, 'sub_item_2', 'val_a', 'val_b', 'val_c', 'val_d', '2022-08-06 20:40:26', '2022-08-06 20:40:26'),
-(3, 1, 'sub_item_3', 'val_a', 'val_b', 'val_c', 'val_d', '2022-08-06 20:40:37', '2022-08-06 20:40:37'),
-(4, 1, 'sub_item_4', 'val_a', 'val_b', 'val_c', 'val_d', '2022-08-06 20:40:46', '2022-08-06 20:40:46'),
-(5, 1, 'sub_item_4', 'val_a', 'val_b', 'val_c', 'val_d', '2022-08-06 20:40:47', '2022-08-06 20:40:47'),
-(6, 1, 'sub_item_5', 'val_a', 'val_b', 'val_c', 'val_d', '2022-08-06 20:41:01', '2022-08-06 20:41:01'),
-(7, 1, 'sub_item_6', 'val_a', 'val_b', 'val_c', 'val_d', '2022-08-06 20:41:05', '2022-08-06 20:41:05'),
-(8, 2, 'sub_item_1', 'val_a', 'val_b', 'val_c', 'val_d', '2022-08-06 20:41:21', '2022-08-06 20:41:21'),
-(9, 2, 'sub_item_2', 'val_a', 'val_b', 'val_c', 'val_d', '2022-08-06 20:41:26', '2022-08-06 20:41:26'),
-(10, 2, 'sub_item_3', 'val_a', 'val_b', 'val_c', 'val_d', '2022-08-06 20:41:30', '2022-08-06 20:41:30'),
-(11, 2, 'sub_item_4', 'val_a', 'val_b', 'val_c', 'val_d', '2022-08-06 20:41:34', '2022-08-06 20:41:34'),
-(12, 2, 'sub_item_5', 'val_a', 'val_b', 'val_c', 'val_d', '2022-08-06 20:41:39', '2022-08-06 20:41:39'),
-(13, 2, 'sub_item_6', 'val_a', 'val_b', 'val_c', 'val_d', '2022-08-06 20:41:43', '2022-08-06 20:41:43'),
-(14, 2, 'sub_item_7', 'val_a', 'val_b', 'val_c', 'val_d', '2022-08-06 21:03:05', '2022-08-06 21:03:05');
+INSERT INTO `sub_item` (`id`, `si_id`, `item_id`, `name`, `col_a`, `col_b`, `col_c`, `col_d`, `created_at`, `updated_at`) VALUES
+(1, '01', 2, '', 'valA', 'valB', 'valC', 'valD', '2022-08-12 19:11:41', '2022-08-12 19:11:41'),
+(2, '02', 2, '', 'valA', 'valB', 'valC', 'valD', '2022-08-12 19:11:41', '2022-08-12 19:11:41'),
+(3, '03', 2, '', 'valA', 'valB', 'valC', 'valD', '2022-08-12 19:11:41', '2022-08-12 19:11:41'),
+(4, '04', 2, '', 'valA', 'valB', 'valC', 'valD', '2022-08-12 19:11:41', '2022-08-12 19:11:41'),
+(5, '05', 2, '', 'valA', 'valB', 'valC', 'valD', '2022-08-12 19:11:41', '2022-08-12 19:11:41'),
+(6, '06', 2, '', 'valA', 'valB', 'valC', 'valD', '2022-08-12 19:11:41', '2022-08-12 19:11:41'),
+(13, '07', 1, '', 'valA', 'valB', 'valC', 'valD', '2022-08-12 19:38:53', '2022-08-12 19:38:53'),
+(14, '08', 1, '', 'valA', 'valB', 'valC', 'valD', '2022-08-12 19:38:53', '2022-08-12 19:38:53'),
+(15, '09', 1, '', 'valA', 'valB', 'valC', 'valD', '2022-08-12 19:38:53', '2022-08-12 19:38:53'),
+(16, '10', 1, '', 'valA', 'valB', 'valC', 'valD', '2022-08-12 19:38:53', '2022-08-12 19:38:53'),
+(17, '11', 1, '', 'valA', 'valB', 'valC', 'valD', '2022-08-12 19:38:53', '2022-08-12 19:38:53'),
+(18, '12', 1, '', 'valA', 'valB', 'valC', 'valD', '2022-08-12 19:38:53', '2022-08-12 19:38:53');
 
 --
 -- Indexes for dumped tables
@@ -95,7 +94,8 @@ ALTER TABLE `item`
 -- Indexes for table `sub_item`
 --
 ALTER TABLE `sub_item`
-  ADD PRIMARY KEY (`si_id`) USING BTREE,
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `si_id` (`si_id`),
   ADD KEY `FK_sub_item_item` (`item_id`);
 
 --
@@ -112,7 +112,7 @@ ALTER TABLE `item`
 -- AUTO_INCREMENT for table `sub_item`
 --
 ALTER TABLE `sub_item`
-  MODIFY `si_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables
